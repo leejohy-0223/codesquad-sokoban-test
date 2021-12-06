@@ -7,7 +7,7 @@ import java.util.Map;
 public class StageMapReader {
 
     private final Map<Character, Integer> basicValue;
-    private final List<StageMap> stageMaps;
+    private List<StageMap> stageMaps;
 
     private StageMapReader(Map<Character, Integer> basicValue, List<StageMap> stageMaps) {
         this.basicValue = basicValue;
@@ -19,11 +19,9 @@ public class StageMapReader {
     }
 
     public void mappingTwoDimensionalArray(String input) {
-
         String[] split = input.split("\n");
         String stageNumber = "";
         List<String> tempStage = new ArrayList<>();
-
         for (int i = 0; i < split.length; i++) {
             if (split[i].contains("Stage")) {
                 stageNumber = split[i];
@@ -34,12 +32,11 @@ public class StageMapReader {
                 tempStage = new ArrayList<>();
                 continue;
             }
+            tempStage.add(changeToNumber(split[i]));
             if (i == split.length - 1) {
-                tempStage.add(changeToNumber(split[i]));
                 stageMaps.add(StageMap.makeStage(stageNumber, tempStage));
                 break;
             }
-            tempStage.add(changeToNumber(split[i]));
         }
     }
 

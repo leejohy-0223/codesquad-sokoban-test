@@ -28,7 +28,8 @@ public class StageMap {
             .orElseThrow(IllegalArgumentException::new);
 
         int[][] tempStageMap = makeIntStage(stageList, rowSize, columnSize);
-        return new StageMap(stageNumber, tempStageMap, findHoleAndBallCount(tempStageMap), findPlayerPosition(tempStageMap));
+        return new StageMap(stageNumber, tempStageMap, findHoleAndBallCount(tempStageMap),
+            findPlayerPosition(tempStageMap));
     }
 
     private static int findHoleAndBallCount(int[][] tempStageMap) {
