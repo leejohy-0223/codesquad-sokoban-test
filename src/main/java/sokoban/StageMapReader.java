@@ -1,25 +1,25 @@
 package sokoban;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class StageMapReader {
 
-    private static final Map<Character, Integer> basicValue = new HashMap<>();
-    private static final List<StageMap> stageMaps = new ArrayList<>();
+    private final Map<Character, Integer> basicValue;
+    private final List<StageMap> stageMaps;
 
-    public static StageMapReader initialMapReader() {
-        basicValue.put('#', 0);
-        basicValue.put('O', 1);
-        basicValue.put('o', 2);
-        basicValue.put('P', 3);
-        basicValue.put(' ', 5);
-        return new StageMapReader();
+    private StageMapReader(Map<Character, Integer> basicValue, List<StageMap> stageMaps) {
+        this.basicValue = basicValue;
+        this.stageMaps = stageMaps;
     }
 
-    void mappingTwoDimensionalArray(String input) {
+    public static StageMapReader initialMapReader(List<StageMap> stageMaps) {
+        return new StageMapReader(ValueMapper.getBasicValue(), stageMaps);
+    }
+
+    public void mappingTwoDimensionalArray(String input) {
+
         String[] split = input.split("\n");
         String stageNumber = "";
         List<String> tempStage = new ArrayList<>();

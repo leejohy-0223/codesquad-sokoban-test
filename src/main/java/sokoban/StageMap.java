@@ -1,32 +1,23 @@
 package sokoban;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class StageMap {
 
-    private static final Map<Integer, Character> reverseValue = new HashMap<>();
+    private final Map<Integer, Character> reverseValue;
     private String stageNumber;
     private int[][] stageMap;
     private int holeAndBallCount;
     private PlayerPosition position;
 
     private StageMap(String stageNumber, int[][] stageMap, int holeAndBallCount, PlayerPosition position) {
-        initReverseValue();
+        reverseValue = ValueMapper.getReverseValue();
         this.stageNumber = stageNumber;
         this.stageMap = stageMap;
         this.holeAndBallCount = holeAndBallCount;
         this.position = position;
-    }
-
-    private void initReverseValue() {
-        reverseValue.put(0, '#');
-        reverseValue.put(1, 'O');
-        reverseValue.put(2, 'o');
-        reverseValue.put(3, 'P');
-        reverseValue.put(5, ' '); // void
     }
 
     public static StageMap makeStage(String stageNumber, List<String> stageList) {
@@ -34,7 +25,7 @@ public class StageMap {
         int columnSize = stageList.stream()
             .mapToInt(String::length)
             .max()
-            .orElse(0);
+            .orElseThrow(IllegalArgumentException::new);
 
         int[][] tempStageMap = makeIntStage(stageList, rowSize, columnSize);
         return new StageMap(stageNumber, tempStageMap, findHoleAndBallCount(tempStageMap), findPlayerPosition(tempStageMap));
