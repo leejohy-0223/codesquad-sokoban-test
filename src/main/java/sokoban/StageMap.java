@@ -91,4 +91,8 @@ public class StageMap {
         }
         System.out.println();
     }
+
+    public boolean isYourStage(String stageNum) {
+        return this.stageNumber.equals(stageNum);
+    }
 }
