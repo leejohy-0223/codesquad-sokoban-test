@@ -75,11 +75,6 @@ public class StageMap {
     public void printStatus() {
         System.out.println(stageNumber + "\n");
         printStage();
-        System.out.println("가로 크기 : " + stageMap[0].length);
-        System.out.println("세로 크기 : " + stageMap.length);
-        System.out.println("구멍의 수 : " + holeAndBallCount);
-        System.out.println("공의 수 : " + holeAndBallCount);
-        System.out.println("플레이어 위치 (" + position.getPosX() + ", " + position.getPosY() + ")\n");
     }
 
     private void printStage() {
