@@ -15,8 +15,7 @@ public class StageMapReader {
         basicValue.put('O', 1);
         basicValue.put('o', 2);
         basicValue.put('P', 3);
-        basicValue.put(' ', 5); // void
-
+        basicValue.put(' ', 5);
         return new StageMapReader();
     }
 
@@ -53,5 +52,6 @@ public class StageMapReader {
     }
 
     public void printStageInfo() {
+        stageMaps.forEach(StageMap::printStatus);
     }
 }

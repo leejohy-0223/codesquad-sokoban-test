@@ -1,7 +1,6 @@
 package sokoban;
 
 public class Application {
-
     public static void main(String[] args) {
         String input = "Stage 1\n"
             + "#####\n"
@@ -21,7 +20,4 @@ public class Application {
         mapReader.mappingTwoDimensionalArray(input);
         mapReader.printStageInfo();
     }
-
-
-
 }

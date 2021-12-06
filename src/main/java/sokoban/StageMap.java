@@ -1,19 +1,32 @@
 package sokoban;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StageMap {
+
+    private static final Map<Integer, Character> reverseValue = new HashMap<>();
     private String stageNumber;
     private int[][] stageMap;
     private int holeAndBallCount;
     private PlayerPosition position;
 
-    public StageMap(String stageNumber, int[][] stageMap, int holeAndBallCount, PlayerPosition position) {
+    private StageMap(String stageNumber, int[][] stageMap, int holeAndBallCount, PlayerPosition position) {
+        initReverseValue();
         this.stageNumber = stageNumber;
         this.stageMap = stageMap;
         this.holeAndBallCount = holeAndBallCount;
         this.position = position;
+    }
+
+    private void initReverseValue() {
+        reverseValue.put(0, '#');
+        reverseValue.put(1, 'O');
+        reverseValue.put(2, 'o');
+        reverseValue.put(3, 'P');
+        reverseValue.put(5, ' '); // void
     }
 
     public static StageMap makeStage(String stageNumber, List<String> stageList) {
@@ -67,4 +80,23 @@ public class StageMap {
         return tempStageMap;
     }
 
+    public void printStatus() {
+        System.out.println(stageNumber + "\n");
+        printStage();
+        System.out.println("가로 크기 : " + stageMap[0].length);
+        System.out.println("세로 크기 : " + stageMap.length);
+        System.out.println("구멍의 수 : " + holeAndBallCount);
+        System.out.println("공의 수 : " + holeAndBallCount);
+        System.out.println("플레이어 위치 (" + position.getPosX() + ", " + position.getPosY() + ")\n");
+    }
+
+    private void printStage() {
+        for (int[] r : stageMap) {
+            for (int c : r) {
+                System.out.print(reverseValue.get(c));
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 }
