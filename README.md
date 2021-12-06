@@ -81,6 +81,29 @@ Stage 2
 
 <br> 
 
+#### 👉🏻 참고 Repository : [GitHub Step1 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step1)
+
+## 🚀 실행 
+- Git, Java는 설치되어 있다고 가정한다.
+- step1 revision Id : 작성 필요
+```
+$ git clone https://gist.github.com/fa8eb5f185967321dd0fb9a81fdc5baa.git step1
+$ cd step1
+$ git checkout step1_리비젼_id
+$ javac Application.java
+$ java Application
+```
+- 위와 같이 gist repository를 통한 실행이 안 될 경우, [GitHub Step1 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step1) 에서 프로젝트 clone을 통해 다음과 같이 실행한다.
+```
+$ git clone https://github.com/leejohy-0223/codesquad-sokoban-test.git
+$ cd codesquad-sokoban-test
+$ git checkout step1
+$ ./gradlew clean build
+$ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar
+```
+
+<br>
+
 ## 🔧 구현 
 
 - Application : 지정된 String 입력을 받아 전체적인 흐름을 구성한다.
