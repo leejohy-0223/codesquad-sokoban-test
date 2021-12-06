@@ -85,12 +85,12 @@ Stage 2
 
 ## 🚀 실행 
 - Git, Java는 설치되어 있다고 가정한다.
-- step1 revision Id : 작성 필요
+- step1 revision Id : 37d7a59
 ```
 $ git clone https://gist.github.com/fa8eb5f185967321dd0fb9a81fdc5baa.git step1
 $ cd step1
 $ git checkout step1_리비젼_id
-$ javac Application.java
+$ javac *.java
 $ java Application
 ```
 - 위와 같이 gist repository를 통한 실행이 안 될 경우, [GitHub Step1 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step1) 에서 프로젝트 clone을 통해 다음과 같이 실행한다.
