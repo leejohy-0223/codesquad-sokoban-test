@@ -24,7 +24,7 @@ public class StageMapReader {
         List<String> tempStage = new ArrayList<>();
         for (int i = 0; i < split.length; i++) {
             if (split[i].contains("Stage")) {
-                stageNumber = split[i];
+                stageNumber = split[i].strip();
                 continue;
             }
             if (split[i].contains("=")) {
@@ -50,5 +50,14 @@ public class StageMapReader {
 
     public void printStageInfo() {
         stageMaps.forEach(StageMap::printStatus);
+    }
+
+    public void startThisStage(String stageNum) {
+        for (StageMap stageMap : stageMaps) {
+            if (stageMap.isYourStage(stageNum)) {
+                GameController.gameStart(stageMap);
+                break;
+            }
+        }
     }
 }

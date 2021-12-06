@@ -3,6 +3,7 @@ package sokoban;
 import java.util.ArrayList;
 
 public class Application {
+
     public static void main(String[] args) {
         String input = "Stage 1\n"
             + "#####\n"
@@ -17,9 +18,8 @@ public class Application {
             + "###  o  ###\n"
             + " #   O  # \n"
             + " ########";
-
         StageMapReader mapReader = StageMapReader.initialMapReader(new ArrayList<>());
         mapReader.mappingTwoDimensionalArray(input);
-        mapReader.printStageInfo();
+        mapReader.startThisStage("Stage 2");
     }
 }
