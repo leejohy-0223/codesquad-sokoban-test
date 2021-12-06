@@ -1,58 +1,35 @@
-## 1단계 : 지도 데이터 출력하기
+## 2단계 : 플레이어 이동 구현하기
 
 <details>
 <summary> 문제 설명 및 요구사항 </summary>
 
 ### 문제 설명
+- 1단계 Stage2의 지도를 읽고 사용자 입력을 받아서 캐릭터를 움직이게 하는 프로그램을 작성하자.
 
-1. 입력: 다음 내용을 문자열로 넘겨서 처리하는 함수를 작성한다.
+<br> 
+
+#### 입력 명령
 ```
-Stage 1
-#####
-#OoP#
-#####
-=====
-Stage 2
-  #######
-###  O  ###
-#    o    #
-# Oo P oO #
-###  o  ###
- #   O  # 
- ########
+- w: 위쪽
+- a: 왼쪽
+- s: 아래쪽
+- d: 오른쪽
+- q: 프로그램 종료
 ```
-2. 위 값을 아래와 같이 읽은 후 2차원 배열로 변환 저장한다.
 
-| 기호   | 의미            | 저장값 | 
-| ------| --------------| ---  |
-|   '#'    | 벽(Wall)      | 0   |
-|   'O'    | 구멍(Hall)    | 1   |
-|   'o'    | 공(Ball)     | 2    |
-|   'P'    | 플레이어(Player)| 3   |
-|   '='    | 스테이지 구분    | 4   |
-|   ' '    | 공백(void)    | 5   |
+<br>
 
-3. 아래와 같은 형태로 각 스테이지 정보를 출력한다.
+#### 요구사항
+- 처음 시작하면 Stage2의 지도를 출력한다.
+- 간단한 프롬프트(예 : ``SOKOBAN``)를 표시해준다.
+- 하나 이상의 문자를 입력받은 경우, 순서대로 처리해서 단계별 상태를 출력한다.
+- 벽이나 공 등 다른 물체에 부딪히면 ``해당 명령을 수행할 수 없습니다`` 메시지를 출력하고 플레이어를 움직이지 않는다.
 
-- 플레이어 위치는 배열 [0][0]을 기준으로 처리한다
-- 아래 출력 예시와 상관없이 기준에 맞춰서 얼마나 떨어진지 표시하면 된다
-- 스테이지 구분값은 출력하지 않는다
+<br>
 
-### 결과 예시
+#### 동작 예시
 
 ```
-Stage 1
-
-#####
-#OoP#
-#####
-
-가로크기: 5
-세로크기: 3
-구멍의 수: 1
-공의 수: 1
-플레이어 위치 (2, 4)
-
 Stage 2
 
   #######
@@ -63,41 +40,80 @@ Stage 2
  #   O  # 
  ########
 
-가로크기: 11
-세로크기: 7
-구멍의 수: 4
-공의 수: 4
-플레이어 위치 (4, 6)
+SOKOBAN> ddzw (엔터)
+
+  #######
+###  O  ###
+#    o    #
+# Oo  PoO #
+###  o  ###
+ #   O  # 
+ ########
+ 
+ D: 오른쪽으로 이동합니다.
+ 
+  #######
+###  O  ###
+#    o    #
+# Oo  PoO #
+###  o  ###
+ #   O  # 
+ ########
+ 
+ D: (경고!) 해당 명령을 수행할 수 없습니다!
+ 
+  #######
+###  O  ###
+#    o    #
+# Oo  PoO #
+###  o  ###
+ #   O  # 
+ ########
+ 
+ Z: (경고!) 해당 명령을 수행할 수 없습니다!
+ 
+  #######
+###  O  ###
+#    o    #
+# Oo  PoO #
+###  o  ###
+ #   O  # 
+ ########
+ 
+ W: 위로 이동합니다.
+ 
+SOKOBAN> q
+Bye~
 ```
 
-### 1단계 코딩 요구사항
+### 2단계 코딩 요구사항
 
-- 컴파일 또는 실행이 가능해야 한다. (컴파일이나 실행되지 않을 경우 감점 대상)
-   - gist는 하위 폴더 구조를 지원하지 않기 때문에 컴파일 또는 실행에 필요한 소스 코드는 모두 포함하고, 프로젝트 파일 등은 포함하지 않아도 된다.
-- 자기만의 기준으로 최대한 간결하게 코드를 작성한다.
-- Readme.md에 풀이 과정 및 코드 설명, 실행 결과를 기술하고 코드와 같이 gist에 포함해야 한다.
-- 제출시 gist URL과 revision 번호를 함께 제출한다.
+- 너무 크지 않은 함수 단위로 구현하고, 중복된 코드를 줄이도록 노력한다.
+- 마찬가지로 Readme.md 파일과 작성한 소스 코드를 모두 기존 secret gist에 올려야 한다.
+- 전역변수의 사용을 자제한다.
+- 객체 또는 배열을 적절히 활용한다.
+
 </details>
 
 <br> 
 
-#### 👉🏻 참고 Repository : [GitHub Step1 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step1)
+#### 👉🏻 참고 Repository : [GitHub Step2 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step2)
 
 ## 🚀 실행 
 - Git, Java는 설치되어 있다고 가정한다.
-- step1 revision Id : 37d7a59
+- step2 revision Id : 
 ```
-$ git clone https://gist.github.com/fa8eb5f185967321dd0fb9a81fdc5baa.git step1
-$ cd step1
-$ git checkout step1_리비젼_id
+$ git clone https://gist.github.com/fa8eb5f185967321dd0fb9a81fdc5baa.git step2
+$ cd step2
+$ git checkout step2_리비젼_id
 $ javac *.java
 $ java Application
 ```
-- 위와 같이 gist repository를 통한 실행이 안 될 경우, [GitHub Step1 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step1) 에서 프로젝트 clone을 통해 다음과 같이 실행한다.
+- 위와 같이 gist repository를 통한 실행이 안 될 경우, [GitHub Step2 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step1) 에서 프로젝트 clone을 통해 다음과 같이 실행한다.
 ```
 $ git clone https://github.com/leejohy-0223/codesquad-sokoban-test.git
 $ cd codesquad-sokoban-test
-$ git checkout step1
+$ git checkout step2
 $ ./gradlew clean build
 $ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar
 ```
