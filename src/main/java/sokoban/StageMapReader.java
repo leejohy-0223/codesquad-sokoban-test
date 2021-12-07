@@ -25,6 +25,7 @@ public class StageMapReader {
         for (StageMap stageMap : stageMaps) {
             GameController.gameStart(stageMap, stageRepository);
         }
+        System.out.println("전체 게임을 클리어하셨습니다!\n" + "축하드립니다!");
     }
 
     private void initialStage() {

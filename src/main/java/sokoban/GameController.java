@@ -14,13 +14,20 @@ public class GameController {
                 }
                 moveByInput(stageMap, input);
             }
-            if (inputs.contains('q') || stageMap.isFinished()) {
-                System.out.println("\n<< 빠밤! " + stageMap.getStageNumber() + " 클리어! >>");
-                System.out.println("[ 턴수 : " + stageMap.getTurnCount() + " ]\n");
+            if (isFinished(stageMap, inputs)) {
                 return;
             }
             inputs = InputView.requestInputFromUser();
         }
+    }
+
+    private static boolean isFinished(StageMap stageMap, List<Character> inputs) {
+        if (inputs.contains('q') || stageMap.isFinished()) {
+            System.out.println("\n< 빠밤! " + stageMap.getStageNumber() + " 클리어! >");
+            System.out.println("[ 턴수 : " + stageMap.getTurnCount() + " ]\n");
+            return true;
+        }
+        return false;
     }
 
     private static StageMap resetStage(StageMap stageMap, StageRepository stageRepository) {

@@ -46,13 +46,21 @@ public class StageMap {
 
     private static PlayerPosition findPlayerPosition(int[][] tempStageMap) {
         for (int i = 0; i < tempStageMap.length; i++) {
-            for (int j = 0; j < tempStageMap[i].length; j++) {
-                if (tempStageMap[i][j] == 3) {
-                    return new PlayerPosition(i, j);
-                }
+            PlayerPosition playerPosition = findPositionInRow(tempStageMap, i);
+            if (playerPosition != null) {
+                return playerPosition;
             }
         }
-        throw new IllegalArgumentException("유저가 없습니다.");
+        throw new IllegalArgumentException("Player가 없습니다.");
+    }
+
+    private static PlayerPosition findPositionInRow(int[][] tempStageMap, int row) {
+        for (int j = 0; j < tempStageMap[row].length; j++) {
+            if (tempStageMap[row][j] == 3) {
+                return new PlayerPosition(row, j);
+            }
+        }
+        return null;
     }
 
     private static int[][] makeIntStage(List<String> stageList, int rowSize, int columnSize) {
@@ -75,7 +83,7 @@ public class StageMap {
     }
 
     public void printStatus() {
-        System.out.println("< 현재 Stage : " + stageNumber + " >");
+        System.out.println("< " + stageNumber + " >");
         printOnlyStageMap();
     }
 
@@ -175,16 +183,22 @@ public class StageMap {
     }
 
     public boolean isFinished() {
-        return holeAndBallCount == fillCount();
+        return holeAndBallCount == countingFill();
     }
 
-    private int fillCount() {
+    private int countingFill() {
         int count = 0;
-        for (int[] ints : stageMap) {
-            for (int j = 0; j < stageMap[0].length; j++) {
-                if (ints[j] == 7) {
-                    count++;
-                }
+        for (int[] row : stageMap) {
+            count += countInRow(row);
+        }
+        return count;
+    }
+
+    private int countInRow(int[] row) {
+        int count = 0;
+        for (int i = 0; i < stageMap[0].length; i++) {
+            if (row[i] == 7) {
+                count++;
             }
         }
         return count;
