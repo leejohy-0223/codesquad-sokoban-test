@@ -17,11 +17,8 @@ public class PlayerPosition {
         return posY;
     }
 
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
+    public void moveToHere(int nx, int ny) {
+        posX = nx;
+        posY = ny;
     }
 }

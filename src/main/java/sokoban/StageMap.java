@@ -94,18 +94,24 @@ public class StageMap {
     public void movePlayer(DirectionValue dValue) {
         int xTemp = position.getPosX() + dValue.getXValue();
         int yTemp = position.getPosY() + dValue.getYValue();
-
         if (stageMap[xTemp][yTemp] == 5) {
-            stageMap[position.getPosX()][position.getPosY()] = 5;
-            stageMap[xTemp][yTemp] = 3;
-            position.setPosX(xTemp);
-            position.setPosY(yTemp);
-            printOnlyStageMap();
-            System.out.println(dValue.getSign() + ": " + dValue.getDirectionName() +"으로 이동합니다.");
-        } else {
-            printOnlyStageMap();
-            System.out.println(dValue.getSign() + ": " + "(경고!) 해당 명령을 수행할 수 없습니다!");
+            movePossible(dValue, xTemp, yTemp);
+            return;
         }
+        moveImpossible(dValue);
+    }
+
+    private void movePossible(DirectionValue dValue, int xTemp, int yTemp) {
+        stageMap[position.getPosX()][position.getPosY()] = 5;
+        stageMap[xTemp][yTemp] = 3;
+        position.moveToHere(xTemp, yTemp);
+        printOnlyStageMap();
+        System.out.println(dValue.getSign() + ": " + dValue.getDirectionName() + "으로 이동합니다.");
+    }
+
+    private void moveImpossible(DirectionValue dValue) {
+        printOnlyStageMap();
+        System.out.println(dValue.getSign() + ": " + "(경고!) 해당 명령을 수행할 수 없습니다!");
     }
 
 }
