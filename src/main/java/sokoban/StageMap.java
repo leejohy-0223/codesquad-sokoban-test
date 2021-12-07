@@ -46,7 +46,7 @@ public class StageMap {
         for (int i = 0; i < tempStageMap.length; i++) {
             for (int j = 0; j < tempStageMap[i].length; j++) {
                 if (tempStageMap[i][j] == 3) {
-                    return new PlayerPosition(i, j); // i+1, j+1 -> i, j로 변경
+                    return new PlayerPosition(i, j);
                 }
             }
         }
@@ -73,7 +73,7 @@ public class StageMap {
     }
 
     public void printStatus() {
-        System.out.println(stageNumber + "\n");
+        System.out.println(stageNumber);
         printOnlyStageMap();
     }
 
