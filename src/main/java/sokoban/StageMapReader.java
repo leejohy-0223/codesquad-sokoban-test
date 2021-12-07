@@ -27,7 +27,7 @@ public class StageMapReader {
                 stageNumber = split[i].strip();
                 continue;
             }
-            if (split[i].contains("=")) {
+            if (split[i].contains(String.valueOf(Constant.CHAR_DIVIDE_STAGE))) {
                 stageMaps.add(StageMap.makeStage(stageNumber, tempStage));
                 tempStage = new ArrayList<>();
                 continue;

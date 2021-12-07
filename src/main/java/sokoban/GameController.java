@@ -6,7 +6,6 @@ public class GameController {
     public static void gameStart(StageMap stageMap) {
         stageMap.printStatus();
         List<Character> inputs = InputView.requestInputFromUser();
-
         while (true) {
             for (Character input : inputs) {
                 moveByInput(stageMap, input);
@@ -33,7 +32,7 @@ public class GameController {
 
     private static DirectionValue mappingToDirectionValue(Character input) {
         for (DirectionValue value : DirectionValue.values()) {
-            if (value.getSign() == input) {
+            if (Character.toLowerCase(value.getSign()) == input) {
                 return value;
             }
         }

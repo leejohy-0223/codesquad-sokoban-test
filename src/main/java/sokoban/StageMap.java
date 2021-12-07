@@ -1,5 +1,7 @@
 package sokoban;
 
+import static sokoban.Constant.*;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class StageMap {
         int result = 0;
         for (int[] row : tempStageMap) {
             result += Arrays.stream(row)
-                .filter(num -> num == 1)
+                .filter(num -> num == INT_HALL)
                 .count();
         }
         return result;
@@ -45,7 +47,7 @@ public class StageMap {
     private static PlayerPosition findPlayerPosition(int[][] tempStageMap) {
         for (int i = 0; i < tempStageMap.length; i++) {
             for (int j = 0; j < tempStageMap[i].length; j++) {
-                if (tempStageMap[i][j] == 3) {
+                if (tempStageMap[i][j] == INT_PLAYER) {
                     return new PlayerPosition(i, j); // i+1, j+1 -> i, j로 변경
                 }
             }
@@ -67,7 +69,7 @@ public class StageMap {
     private static int[][] initialStageMap(int rowSize, int columnSize) {
         int[][] tempStageMap = new int[rowSize][columnSize];
         for (int[] ints : tempStageMap) {
-            Arrays.fill(ints, 5);
+            Arrays.fill(ints, INT_VOID);
         }
         return tempStageMap;
     }
@@ -94,7 +96,7 @@ public class StageMap {
     public void movePlayer(DirectionValue dValue) {
         int xTemp = position.getPosX() + dValue.getXValue();
         int yTemp = position.getPosY() + dValue.getYValue();
-        if (stageMap[xTemp][yTemp] == 5) {
+        if (stageMap[xTemp][yTemp] == INT_VOID) {
             movePossible(dValue, xTemp, yTemp);
             return;
         }
@@ -102,8 +104,8 @@ public class StageMap {
     }
 
     private void movePossible(DirectionValue dValue, int xTemp, int yTemp) {
-        stageMap[position.getPosX()][position.getPosY()] = 5;
-        stageMap[xTemp][yTemp] = 3;
+        stageMap[position.getPosX()][position.getPosY()] = INT_VOID;
+        stageMap[xTemp][yTemp] = INT_PLAYER;
         position.moveToHere(xTemp, yTemp);
         printOnlyStageMap();
         System.out.println(dValue.getSign() + ": " + dValue.getDirectionName() + "으로 이동합니다.");

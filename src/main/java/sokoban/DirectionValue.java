@@ -1,10 +1,10 @@
 package sokoban;
 
 public enum DirectionValue {
-    LEFT("왼쪽", 'a', 0, -1),
-    RIGHT("오른쪽", 'd', 0, +1),
-    UP("위쪽", 'w', -1, 0),
-    DOWN("아래쪽", 's', 1, 0),
+    LEFT("왼쪽", 'A', 0, -1),
+    RIGHT("오른쪽", 'D', 0, +1),
+    UP("위쪽", 'W', -1, 0),
+    DOWN("아래쪽", 'S', 1, 0),
     QUIT("프로그램 종료", 'q', 0, 0),
     INVALID("", ' ', 0, 0)
     ;

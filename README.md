@@ -120,6 +120,13 @@ $ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar
 
 <br>
 
+## 📝 풀이
+
+- Client(Application)로부터 원하는 Stage를 입력받아 게임을 시작하는 객체를 만든다. 
+- 입력을 처리 및 검증하는 객체를 만든다. q를 입력받으면 Application을 종료한다.
+
+<br>
+
 ## 🔧 구현 
 
 - Application : 지정된 String 입력을 받아 전체적인 흐름을 구성한다.
