@@ -6,8 +6,7 @@ public enum DirectionValue {
     UP("위쪽", 'W', -1, 0),
     DOWN("아래쪽", 'S', 1, 0),
     QUIT("프로그램 종료", 'q', 0, 0),
-    INVALID("", ' ', 0, 0)
-    ;
+    INVALID("", ' ', 0, 0);
 
     private final String directionName;
     private final char sign;
