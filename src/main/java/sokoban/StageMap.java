@@ -36,7 +36,7 @@ public class StageMap {
         int result = 0;
         for (int[] row : tempStageMap) {
             result += Arrays.stream(row)
-                .filter(i -> i == 1)
+                .filter(num -> num == 1)
                 .count();
         }
         return result;
@@ -46,7 +46,7 @@ public class StageMap {
         for (int i = 0; i < tempStageMap.length; i++) {
             for (int j = 0; j < tempStageMap[i].length; j++) {
                 if (tempStageMap[i][j] == 3) {
-                    return new PlayerPosition(i + 1, j + 1);
+                    return new PlayerPosition(i, j); // i+1, j+1 -> i, j로 변경
                 }
             }
         }
@@ -74,10 +74,10 @@ public class StageMap {
 
     public void printStatus() {
         System.out.println(stageNumber + "\n");
-        printStage();
+        printOnlyStageMap();
     }
 
-    private void printStage() {
+    public void printOnlyStageMap() {
         for (int[] r : stageMap) {
             for (int c : r) {
                 System.out.print(reverseValue.get(c));
@@ -90,4 +90,22 @@ public class StageMap {
     public boolean isYourStage(String stageNum) {
         return this.stageNumber.equals(stageNum);
     }
+
+    public void movePlayer(DirectionValue dValue) {
+        int xTemp = position.getPosX() + dValue.getXValue();
+        int yTemp = position.getPosY() + dValue.getYValue();
+
+        if (stageMap[xTemp][yTemp] == 5) {
+            stageMap[position.getPosX()][position.getPosY()] = 5;
+            stageMap[xTemp][yTemp] = 3;
+            position.setPosX(xTemp);
+            position.setPosY(yTemp);
+            printOnlyStageMap();
+            System.out.println(dValue.getSign() + ": " + dValue.getDirectionName() +"으로 이동합니다.");
+        } else {
+            printOnlyStageMap();
+            System.out.println(dValue.getSign() + ": " + "(경고!) 해당 명령을 수행할 수 없습니다!");
+        }
+    }
+
 }
