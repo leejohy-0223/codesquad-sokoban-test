@@ -73,7 +73,7 @@ public class StageMap {
     }
 
     public void printStatus() {
-        System.out.println(stageNumber);
+        System.out.println("< 현재 Stage : " + stageNumber + " >");
         printOnlyStageMap();
     }
 
@@ -88,16 +88,22 @@ public class StageMap {
         System.out.println();
     }
 
+    public String getStageNumber() {
+        return stageNumber;
+    }
+
     public void movePlayer(DirectionValue dValue) {
         int xTemp = position.getPosX() + dValue.getXValue();
         int yTemp = position.getPosY() + dValue.getYValue();
         decideMoving(dValue, xTemp, yTemp, stageMap[xTemp][yTemp]);
+
     }
 
     private void decideMoving(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
         // 벽일 경우 못 움직인다.
         if (newBlock == 0) {
             moveImpossible(dValue);
+            return;
         }
         // 구멍 또는 공백일 경우
         if (newBlock == 1 || newBlock == 5) {
@@ -158,5 +164,21 @@ public class StageMap {
     private void moveImpossible(DirectionValue dValue) {
         printOnlyStageMap();
         System.out.println(dValue.getSign() + ": " + "(경고!) 해당 명령을 수행할 수 없습니다!");
+    }
+
+    public boolean isFinished() {
+        return holeAndBallCount == fillCount();
+    }
+
+    private int fillCount() {
+        int count = 0;
+        for (int[] ints : stageMap) {
+            for (int j = 0; j < stageMap[0].length; j++) {
+                if (ints[j] == 7) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }

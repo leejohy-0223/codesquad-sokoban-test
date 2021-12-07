@@ -10,8 +10,9 @@ public class GameController {
             for (Character input : inputs) {
                 moveByInput(stageMap, input);
             }
-            if (inputs.contains('q')) {
-                break;
+            if (inputs.contains('q') || stageMap.isFinished()) {
+                System.out.println("\n << 빠밤! " + stageMap.getStageNumber() + " 클리어! >> \n");
+                return;
             }
             inputs = InputView.requestInputFromUser();
         }
