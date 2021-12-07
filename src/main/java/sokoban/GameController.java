@@ -11,7 +11,8 @@ public class GameController {
                 moveByInput(stageMap, input);
             }
             if (inputs.contains('q') || stageMap.isFinished()) {
-                System.out.println("\n << 빠밤! " + stageMap.getStageNumber() + " 클리어! >> \n");
+                System.out.println("\n<< 빠밤! " + stageMap.getStageNumber() + " 클리어! >>");
+                System.out.println("[ 턴수 : " + stageMap.getTurnCount() + " ]\n");
                 return;
             }
             inputs = InputView.requestInputFromUser();
