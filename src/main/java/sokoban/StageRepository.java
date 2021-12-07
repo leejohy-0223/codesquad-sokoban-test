@@ -1,5 +1,7 @@
 package sokoban;
 
+import static sokoban.Constant.*;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,7 +30,7 @@ public class StageRepository {
                 stageNumber = split[i].trim();
                 continue;
             }
-            if (split[i].contains("=")) {
+            if (split[i].contains(String.valueOf(CHAR_DIVIDE_STAGE))) {
                 stageMaps.put(stageNumber, tempStage);
                 tempStage = new ArrayList<>();
                 continue;

@@ -5,7 +5,7 @@ public enum DirectionValue {
     RIGHT("오른쪽", 'D', 0, +1),
     UP("위쪽", 'W', -1, 0),
     DOWN("아래쪽", 'S', 1, 0),
-    QUIT("프로그램 종료", 'q', 0, 0),
+    QUIT("스테이지를 스킵합니다", 'q', 0, 0),
     INVALID("", ' ', 0, 0);
 
     private final String directionName;

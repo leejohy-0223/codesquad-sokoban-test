@@ -34,8 +34,4 @@ public class StageMapReader {
             stageMaps.add(StageMap.makeStage(key, initialMap.get(key)));
         }
     }
-
-    public void printStageInfo() {
-        stageMaps.forEach(StageMap::printStatus);
-    }
 }

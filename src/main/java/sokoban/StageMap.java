@@ -1,5 +1,7 @@
 package sokoban;
 
+import static sokoban.Constant.*;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ public class StageMap {
         int result = 0;
         for (int[] row : tempStageMap) {
             result += Arrays.stream(row)
-                .filter(num -> num == 1)
+                .filter(num -> num == INT_HALL)
                 .count();
         }
         return result;
@@ -46,7 +48,7 @@ public class StageMap {
 
     private static PlayerPosition findPlayerPosition(int[][] tempStageMap) {
         for (int i = 0; i < tempStageMap.length; i++) {
-            PlayerPosition playerPosition = findPositionInRow(tempStageMap, i);
+            PlayerPosition playerPosition = findPlayerPositionInRow(tempStageMap, i);
             if (playerPosition != null) {
                 return playerPosition;
             }
@@ -54,9 +56,9 @@ public class StageMap {
         throw new IllegalArgumentException("Player가 없습니다.");
     }
 
-    private static PlayerPosition findPositionInRow(int[][] tempStageMap, int row) {
+    private static PlayerPosition findPlayerPositionInRow(int[][] tempStageMap, int row) {
         for (int j = 0; j < tempStageMap[row].length; j++) {
-            if (tempStageMap[row][j] == 3) {
+            if (tempStageMap[row][j] == INT_PLAYER) {
                 return new PlayerPosition(row, j);
             }
         }
@@ -77,7 +79,7 @@ public class StageMap {
     private static int[][] initialStageMap(int rowSize, int columnSize) {
         int[][] tempStageMap = new int[rowSize][columnSize];
         for (int[] ints : tempStageMap) {
-            Arrays.fill(ints, 5);
+            Arrays.fill(ints, INT_VOID);
         }
         return tempStageMap;
     }
@@ -115,26 +117,26 @@ public class StageMap {
 
     private void decideMoving(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
         // 벽일 경우 못 움직인다.
-        if (newBlock == 0) {
+        if (newBlock == INT_WALL) {
             moveImpossible(dValue);
             return;
         }
         // 구멍 또는 공백일 경우
-        if (newBlock == 1 || newBlock == 5) {
+        if (newBlock == INT_HALL || newBlock == INT_VOID) {
             moveToHoleOrVoid(dValue, xTemp, yTemp, newBlock);
         }
         // 공이거나 채워진 상태일 경우
-        if (newBlock == 2 || newBlock == 7) {
+        if (newBlock == INT_BALL || newBlock == INT_BALL_WITH_HALL) {
             moveToBallOrFillStatus(dValue, xTemp, yTemp, newBlock);
         }
     }
 
     private void moveToHoleOrVoid(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
-        if (stageMap[position.getPosX()][position.getPosY()] == 3) { // 이전 위치에 플레이어만 있었을 경우에는 공백 넣기
-            stageMap[position.getPosX()][position.getPosY()] = 5;
+        if (stageMap[position.getPosX()][position.getPosY()] == INT_PLAYER) { // 이전 위치에 플레이어만 있었을 경우에는 공백 넣기
+            stageMap[position.getPosX()][position.getPosY()] = INT_VOID;
         }
-        if (stageMap[position.getPosX()][position.getPosY()] == 6) { // 플레이어 + 구멍(6)이었을 경우에는 구멍 넣기
-            stageMap[position.getPosX()][position.getPosY()] = 1;
+        if (stageMap[position.getPosX()][position.getPosY()] == INT_PLAYER_WITH_HALL) { // 플레이어 + 구멍(6)이었을 경우에는 구멍 넣기
+            stageMap[position.getPosX()][position.getPosY()] = INT_HALL;
         }
         decidePlayerPosition(dValue, xTemp, yTemp, newBlock);
         turnCount++;
@@ -144,29 +146,29 @@ public class StageMap {
         int nx = xTemp + dValue.getXValue();
         int ny = yTemp + dValue.getYValue();
         // 싱태 뒤에 벽 또는 새로운 공, 채워진 상태 있다면 이동 불가
-        if (stageMap[nx][ny] == 0 || stageMap[nx][ny] == 2 || stageMap[nx][ny] == 7) {
+        if (stageMap[nx][ny] == INT_WALL || stageMap[nx][ny] == INT_BALL || stageMap[nx][ny] == INT_BALL_WITH_HALL) {
             moveImpossible(dValue);
             return;
         }
         // 빈 땅이라면 player 와 한칸씩 같이 움직이기
-        if (stageMap[nx][ny] == 5) {
-            stageMap[nx][ny] = 2; // 공으로 채우기
+        if (stageMap[nx][ny] == INT_VOID) {
+            stageMap[nx][ny] = INT_BALL; // 공으로 채우기
         }
         // 구멍이라면
-        if (stageMap[nx][ny] == 1) {
-            stageMap[nx][ny] = 7; // 공 + 구멍으로 채우기
+        if (stageMap[nx][ny] == INT_HALL) {
+            stageMap[nx][ny] = INT_BALL_WITH_HALL; // 공 + 구멍으로 채우기
         }
-        stageMap[position.getPosX()][position.getPosY()] = 5;
+        stageMap[position.getPosX()][position.getPosY()] = INT_VOID;
         decidePlayerPosition(dValue, xTemp, yTemp, newBlock);
         turnCount++;
     }
 
     private void decidePlayerPosition(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
-        if (newBlock == 1 || newBlock == 7) { // 새로운 위치가 공 + 구멍일 경우 플레이어 + 구멍으로 채운다.
-            mappingCommonValue(dValue, xTemp, yTemp, 6);
+        if (newBlock == INT_HALL || newBlock == INT_BALL_WITH_HALL) {
+            mappingCommonValue(dValue, xTemp, yTemp, INT_PLAYER_WITH_HALL);
         }
-        if (newBlock == 2 || newBlock == 5) { // 새로운 위치가 그냥 공 위치였다면, 플레이어로 채운다.
-            mappingCommonValue(dValue, xTemp, yTemp, 3);
+        if (newBlock == INT_BALL || newBlock == INT_VOID) { // 새로운 위치가 그냥 공 위치였다면, 플레이어로 채운다.
+            mappingCommonValue(dValue, xTemp, yTemp, INT_PLAYER);
         }
     }
 
@@ -197,7 +199,7 @@ public class StageMap {
     private int countInRow(int[] row) {
         int count = 0;
         for (int i = 0; i < stageMap[0].length; i++) {
-            if (row[i] == 7) {
+            if (row[i] == INT_BALL_WITH_HALL) {
                 count++;
             }
         }
