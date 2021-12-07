@@ -112,67 +112,64 @@ public class StageMap {
         int xTemp = position.getPosX() + dValue.getXValue();
         int yTemp = position.getPosY() + dValue.getYValue();
         decideMoving(dValue, xTemp, yTemp, stageMap[xTemp][yTemp]);
-
     }
 
     private void decideMoving(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
-        // 벽일 경우 못 움직인다.
         if (newBlock == INT_WALL) {
             moveImpossible(dValue);
             return;
         }
-        // 구멍 또는 공백일 경우
         if (newBlock == INT_HALL || newBlock == INT_VOID) {
             moveToHoleOrVoid(dValue, xTemp, yTemp, newBlock);
         }
-        // 공이거나 채워진 상태일 경우
         if (newBlock == INT_BALL || newBlock == INT_BALL_WITH_HALL) {
             moveToBallOrFillStatus(dValue, xTemp, yTemp, newBlock);
         }
     }
 
     private void moveToHoleOrVoid(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
-        if (stageMap[position.getPosX()][position.getPosY()] == INT_PLAYER) { // 이전 위치에 플레이어만 있었을 경우에는 공백 넣기
-            stageMap[position.getPosX()][position.getPosY()] = INT_VOID;
-        }
-        if (stageMap[position.getPosX()][position.getPosY()] == INT_PLAYER_WITH_HALL) { // 플레이어 + 구멍(6)이었을 경우에는 구멍 넣기
-            stageMap[position.getPosX()][position.getPosY()] = INT_HALL;
-        }
+        decideBeforePlayerPositionStatus();
         decidePlayerPosition(dValue, xTemp, yTemp, newBlock);
         turnCount++;
+    }
+
+    private void decideBeforePlayerPositionStatus() {
+        if (stageMap[position.getPosX()][position.getPosY()] == INT_PLAYER) {
+            stageMap[position.getPosX()][position.getPosY()] = INT_VOID;
+        }
+        if (stageMap[position.getPosX()][position.getPosY()] == INT_PLAYER_WITH_HALL) {
+            stageMap[position.getPosX()][position.getPosY()] = INT_HALL;
+        }
     }
 
     private void moveToBallOrFillStatus(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
         int nx = xTemp + dValue.getXValue();
         int ny = yTemp + dValue.getYValue();
-        // 싱태 뒤에 벽 또는 새로운 공, 채워진 상태 있다면 이동 불가
         if (stageMap[nx][ny] == INT_WALL || stageMap[nx][ny] == INT_BALL || stageMap[nx][ny] == INT_BALL_WITH_HALL) {
             moveImpossible(dValue);
             return;
         }
-        // 빈 땅이라면 player 와 한칸씩 같이 움직이기
         if (stageMap[nx][ny] == INT_VOID) {
-            stageMap[nx][ny] = INT_BALL; // 공으로 채우기
+            stageMap[nx][ny] = INT_BALL;
         }
-        // 구멍이라면
         if (stageMap[nx][ny] == INT_HALL) {
-            stageMap[nx][ny] = INT_BALL_WITH_HALL; // 공 + 구멍으로 채우기
+            stageMap[nx][ny] = INT_BALL_WITH_HALL;
         }
-        stageMap[position.getPosX()][position.getPosY()] = INT_VOID;
+        decideBeforePlayerPositionStatus();
         decidePlayerPosition(dValue, xTemp, yTemp, newBlock);
         turnCount++;
     }
 
     private void decidePlayerPosition(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
         if (newBlock == INT_HALL || newBlock == INT_BALL_WITH_HALL) {
-            mappingCommonValue(dValue, xTemp, yTemp, INT_PLAYER_WITH_HALL);
+            mappingPlayerPosition(dValue, xTemp, yTemp, INT_PLAYER_WITH_HALL);
         }
-        if (newBlock == INT_BALL || newBlock == INT_VOID) { // 새로운 위치가 그냥 공 위치였다면, 플레이어로 채운다.
-            mappingCommonValue(dValue, xTemp, yTemp, INT_PLAYER);
+        if (newBlock == INT_BALL || newBlock == INT_VOID) {
+            mappingPlayerPosition(dValue, xTemp, yTemp, INT_PLAYER);
         }
     }
 
-    private void mappingCommonValue(DirectionValue dValue, int xTemp, int yTemp, int nextStatus) {
+    private void mappingPlayerPosition(DirectionValue dValue, int xTemp, int yTemp, int nextStatus) {
         stageMap[xTemp][yTemp] = nextStatus;
         position.moveToHere(xTemp, yTemp);
         printOnlyStageMap();

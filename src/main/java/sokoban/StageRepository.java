@@ -43,15 +43,15 @@ public class StageRepository {
         }
     }
 
-    public Map<String, List<String>> getStageMaps() {
-        return stageMaps;
-    }
-
     private String changeToNumber(String s) {
         StringBuilder sb = new StringBuilder();
         for (char tempChar : s.toCharArray()) {
             sb.append(basicValue.get(tempChar));
         }
         return sb.toString();
+    }
+
+    public Map<String, List<String>> getStageMaps() {
+        return stageMaps;
     }
 }
