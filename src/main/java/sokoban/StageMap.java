@@ -88,22 +88,103 @@ public class StageMap {
         System.out.println();
     }
 
-    public boolean isYourStage(String stageNum) {
-        return this.stageNumber.equals(stageNum);
-    }
-
     public void movePlayer(DirectionValue dValue) {
         int xTemp = position.getPosX() + dValue.getXValue();
         int yTemp = position.getPosY() + dValue.getYValue();
-        if (stageMap[xTemp][yTemp] == 5) {
-            movePossible(dValue, xTemp, yTemp);
-            return;
-        }
-        moveImpossible(dValue);
+        decideMoving(dValue, xTemp, yTemp, stageMap[xTemp][yTemp]);
     }
 
-    private void movePossible(DirectionValue dValue, int xTemp, int yTemp) {
+    private void decideMoving(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
+        // 벽일 경우 못움직인다.
+        if (newBlock == 0) {
+            moveImpossible(dValue);
+        }
+        // 공백일 경우
+        if (newBlock == 5) {
+            moveToVoid(dValue, xTemp, yTemp);
+        }
+        // 구멍일 경우
+        if (newBlock == 1) {
+            moveToHole(dValue, xTemp, yTemp);
+        }
+        // 공일 경우
+        if (newBlock == 2) {
+            moveToBall(dValue, xTemp, yTemp);
+        }
+        // 채워진 상태인 경우
+        if (newBlock == 7) {
+            moveToFillStatus(dValue, xTemp, yTemp);
+        }
+    }
+
+    private void moveToFillStatus(DirectionValue dValue, int xTemp, int yTemp) {
+        // 채워진 상태 뒤에 확인
+        int nx = xTemp + dValue.getXValue();
+        int ny = yTemp + dValue.getYValue();
+
+        // 싱태 뒤에 벽 또는 새로운 공, 채워진 상태 있다면 이동 불가
+        if (stageMap[nx][ny] == 0 || stageMap[nx][ny] == 2 || stageMap[nx][ny] == 7) {
+            moveImpossible(dValue);
+            return;
+        }
+        // 빈 땅이라면 player 와 한칸씩 같이 움직이기
+        if (stageMap[nx][ny] == 5) {
+            stageMap[nx][ny] = 2; // 공으로 채우기
+        }
+        // 구멍이라면
+        if (stageMap[nx][ny] == 1) {
+            stageMap[nx][ny] = 7; // 공 + 구멍으로 채우기
+        }
+        stageMap[xTemp][yTemp] = 6; // 공 + 플레이어로 채우기
+        position.moveToHere(xTemp, yTemp);
+        printOnlyStageMap();
+        System.out.println(dValue.getSign() + ": " + dValue.getDirectionName() + "으로 이동합니다.");
+    }
+
+    private void moveToBall(DirectionValue dValue, int xTemp, int yTemp) {
+        // 공 뒤에 확인
+        int nx = xTemp + dValue.getXValue();
+        int ny = yTemp + dValue.getYValue();
+
+        // 공 뒤에 벽 또는 새로운 공, 채워진 상태 있다면 이동 불가
+        if (stageMap[nx][ny] == 0 || stageMap[nx][ny] == 2 || stageMap[nx][ny] == 7) {
+            moveImpossible(dValue);
+            return;
+        }
+        // 빈 땅이라면 player 와 한칸씩 같이 움직이기
+        if (stageMap[nx][ny] == 5) {
+            stageMap[nx][ny] = 2; // 공으로 채우기
+        }
+        // 구멍이라면
+        if (stageMap[nx][ny] == 1) {
+            stageMap[nx][ny] = 7; // 공 + 구멍으로 채우기
+        }
+        stageMap[xTemp][yTemp] = 3;
         stageMap[position.getPosX()][position.getPosY()] = 5;
+
+        position.moveToHere(xTemp, yTemp);
+        printOnlyStageMap();
+        System.out.println(dValue.getSign() + ": " + dValue.getDirectionName() + "으로 이동합니다.");
+    }
+
+    private void moveToHole(DirectionValue dValue, int xTemp, int yTemp) {
+        if (stageMap[position.getPosX()][position.getPosY()] == 3) { // 플레이어만 있었을 경우에는 공백
+            stageMap[position.getPosX()][position.getPosY()] = 5;
+        } else {
+            stageMap[position.getPosX()][position.getPosY()] = 1; // 플레이어 + 구멍이었을 경우에는 구멍
+        }
+        stageMap[xTemp][yTemp] = 6; // 구멍으로 이동했으므로, 플레어어 + 구멍으로 저장
+        position.moveToHere(xTemp, yTemp);
+        printOnlyStageMap();
+        System.out.println(dValue.getSign() + ": " + dValue.getDirectionName() + "으로 이동합니다.");
+    }
+
+    private void moveToVoid(DirectionValue dValue, int xTemp, int yTemp) {
+        if (stageMap[position.getPosX()][position.getPosY()] == 3) { // 플레이어만 있었을 경우에는 공백
+            stageMap[position.getPosX()][position.getPosY()] = 5;
+        } else {
+            stageMap[position.getPosX()][position.getPosY()] = 1; // 플레이어 + 구멍이었을 경우에는 구멍
+        }
         stageMap[xTemp][yTemp] = 3;
         position.moveToHere(xTemp, yTemp);
         printOnlyStageMap();

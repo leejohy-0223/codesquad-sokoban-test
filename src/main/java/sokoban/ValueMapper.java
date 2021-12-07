@@ -18,6 +18,8 @@ public class ValueMapper {
         basicValue.put('o', 2);
         basicValue.put('P', 3);
         basicValue.put(' ', 5);
+        basicValue.put('*', 6);
+        basicValue.put('0', 7);
     }
 
     private static void initReverseValue() {
@@ -26,6 +28,8 @@ public class ValueMapper {
         reverseValue.put(2, 'o');
         reverseValue.put(3, 'P');
         reverseValue.put(5, ' ');
+        reverseValue.put(6, '*');
+        reverseValue.put(7, '0');
     }
 
     public static Map<Character, Integer> getBasicValue() {
