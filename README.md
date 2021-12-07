@@ -240,47 +240,47 @@ $ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar
 
 <br>
 
-#### Application 
+#### 1. Application 
 - Step 1 : 지정된 String 입력을 받아 전체적인 흐름을 구성한다.
 - Step 2 : 몇 번째 Stage를 시작할 지 추가로 전달한다.
 
 <br>
 
-#### StageMapReader 
+#### 2. StageMapReader 
 - Step 1 : Application으로부터 전달받은 String을 parsing해서 StageMap 객체를 생성한다. 또한 StageMap 객체에 직접적으로 접근한다.
 - Step 2 : Application으로부터 전달받은 stage Number에 해당하는 StageMap 객체를 가져와 GameController에 전달한다. 
   
 <br>
 
-#### StageMap
+#### 3. StageMap
 - Step 1 : 지도 데이터의 정보를 저장하고, PlayerPosition 객체를 가진다.
 - Step 2 : GameController로부터 이동 정보를 받아 PlayerPosition을 변경시킨다.
 
 <br>
 
-#### PlayerPosition
+#### 4. PlayerPosition
 - Step 1 : Player의 포지션 정보를 가지는 객체이다.
 - Step 2 : 동일
 
 <br>  
 
-#### ValueMapper
+#### 5. ValueMapper
 - Step 1 : 기호(char)와 저장값(int)을 관리하는 Map을 가지며, 필요한 객체에게 제공한다.
 - Step 2 : 동일
 
 <br>
 
-#### (추가) DirectionValue
+#### 6. (추가) DirectionValue
 - Step 2 : 방향에 따른 방향 이름, 기호, 이동량을 가지는 Enum 이다.
 
 <br>
 
-#### (추가) GameController
+#### 7. (추가) GameController
 - Step 2 : StageMapReader로 부터 StageMap 객체를 전달받는다. 사용자 입력을 받아 Enum으로 변경 후 StageMap에 전달하는 역할을 수행한다.
 
 <br>
 
-#### (추가) InputView
+#### 8. (추가) InputView
 - Step 2 : 사용자 입력 담당을 한다. 
 
 <br> 
@@ -469,7 +469,7 @@ public enum DirectionValue {
 <br>
 
 ### 8. InputView(추가)
-> **변수 및 static 생성자, Getter만 포함**
+> **requestInputFromUser : 사용자 입력 담당**
 ```java
     public static final String PROMPT = "SOKOBAN> ";
 
