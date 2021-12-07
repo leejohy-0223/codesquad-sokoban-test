@@ -24,7 +24,7 @@ public class StageMapReader {
         List<String> tempStage = new ArrayList<>();
         for (int i = 0; i < split.length; i++) {
             if (split[i].contains("Stage")) {
-                stageNumber = split[i].strip();
+                stageNumber = split[i].trim();
                 continue;
             }
             if (split[i].contains("=")) {
