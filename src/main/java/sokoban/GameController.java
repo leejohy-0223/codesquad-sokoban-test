@@ -32,7 +32,7 @@ public class GameController {
 
     private static DirectionValue mappingToDirectionValue(Character input) {
         for (DirectionValue value : DirectionValue.values()) {
-            if (Character.toLowerCase(value.getSign()) == input) {
+            if (Character.toLowerCase(value.getSign()) == Character.toLowerCase(input)) {
                 return value;
             }
         }

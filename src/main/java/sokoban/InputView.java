@@ -28,7 +28,8 @@ public class InputView {
                 sb.append(line).append("\n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.out.println("[ERROR] 유효한 파일이 아닙니다.");
         }
         return sb.toString();
     }

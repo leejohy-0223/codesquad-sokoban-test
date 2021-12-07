@@ -1,67 +1,40 @@
 package sokoban;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class StageMapReader {
 
-    private final Map<Character, Integer> basicValue;
+    private final StageRepository stageRepository;
     private List<StageMap> stageMaps;
-    private StageMapRepository stageMapRepository;
 
-    private StageMapReader(Map<Character, Integer> basicValue, List<StageMap> stageMaps, StageMapRepository stageMapRepository) {
-        this.basicValue = basicValue;
+    private StageMapReader(List<StageMap> stageMaps, StageRepository stageRepository) {
         this.stageMaps = stageMaps;
-        this.stageMapRepository = stageMapRepository;
+        this.stageRepository = stageRepository;
     }
 
     public static StageMapReader initialMapReader(List<StageMap> stageMaps, String mapInput) {
-        StageMapRepository repository = StageMapRepository.makeRepository();
+        StageRepository repository = StageRepository.makeRepository();
         repository.makeInnerMapValue(mapInput);
-        return new StageMapReader(ValueMapper.getBasicValue(), stageMaps, repository);
+        return new StageMapReader(stageMaps, repository);
     }
 
-    public void mappingTwoDimensionalArray(String input) {
-        String[] split = input.split("\n");
-        String stageNumber = "";
-        List<String> tempStage = new ArrayList<>();
-        for (int i = 0; i < split.length; i++) {
-            if (split[i].contains("Stage")) {
-                stageNumber = split[i].trim();
-                continue;
-            }
-            if (split[i].contains("=")) {
-                stageMaps.add(StageMap.makeStage(stageNumber, tempStage));
-                tempStage = new ArrayList<>();
-                continue;
-            }
-            tempStage.add(changeToNumber(split[i]));
-            if (i == split.length - 1) {
-                stageMaps.add(StageMap.makeStage(stageNumber, tempStage));
-                break;
-            }
+    public void startStage() {
+        initialStage();
+        System.out.println("소코반의 세계에 오신 것을 환영합니다!\n");
+        for (StageMap stageMap : stageMaps) {
+            GameController.gameStart(stageMap);
         }
     }
 
-    private String changeToNumber(String s) {
-        StringBuilder sb = new StringBuilder();
-        for (char tempChar : s.toCharArray()) {
-            sb.append(basicValue.get(tempChar));
+    private void initialStage() {
+        Map<String, List<String>> initialMap = stageRepository.getStageMaps();
+        for (String key : initialMap.keySet()) {
+            stageMaps.add(StageMap.makeStage(key, initialMap.get(key)));
         }
-        return sb.toString();
     }
 
     public void printStageInfo() {
         stageMaps.forEach(StageMap::printStatus);
-    }
-
-    public void startThisStage(String stageNum) {
-        for (StageMap stageMap : stageMaps) {
-            if (stageMap.isYourStage(stageNum)) {
-                GameController.gameStart(stageMap);
-                break;
-            }
-        }
     }
 }
