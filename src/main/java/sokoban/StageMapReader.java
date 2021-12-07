@@ -23,7 +23,7 @@ public class StageMapReader {
         initialStage();
         System.out.println("소코반의 세계에 오신 것을 환영합니다!\n");
         for (StageMap stageMap : stageMaps) {
-            GameController.gameStart(stageMap);
+            GameController.gameStart(stageMap, stageRepository);
         }
     }
 

@@ -3,11 +3,15 @@ package sokoban;
 import java.util.List;
 
 public class GameController {
-    public static void gameStart(StageMap stageMap) {
+    public static void gameStart(StageMap stageMap, StageRepository stageRepository) {
         stageMap.printStatus();
         List<Character> inputs = InputView.requestInputFromUser();
         while (true) {
             for (Character input : inputs) {
+                if (input == 'r') {
+                    stageMap = resetStage(stageMap, stageRepository);
+                    continue;
+                }
                 moveByInput(stageMap, input);
             }
             if (inputs.contains('q') || stageMap.isFinished()) {
@@ -17,6 +21,19 @@ public class GameController {
             }
             inputs = InputView.requestInputFromUser();
         }
+    }
+
+    private static StageMap resetStage(StageMap stageMap, StageRepository stageRepository) {
+        stageMap = initialStageMap(stageMap, stageRepository);
+        stageMap.printOnlyStageMap();
+        return stageMap;
+    }
+
+    private static StageMap initialStageMap(StageMap stageMap, StageRepository stageRepository) {
+        String stageNumber = stageMap.getStageNumber();
+        List<String> initialMapValue = stageRepository.getStageMaps().get(stageNumber);
+        System.out.println(stageNumber + "가 리셋되었습니다.");
+        return StageMap.makeStage(stageNumber, initialMapValue);
     }
 
     private static void moveByInput(StageMap stageMap, Character input) {
