@@ -8,14 +8,18 @@ public class StageMapReader {
 
     private final Map<Character, Integer> basicValue;
     private List<StageMap> stageMaps;
+    private StageMapRepository stageMapRepository;
 
-    private StageMapReader(Map<Character, Integer> basicValue, List<StageMap> stageMaps) {
+    private StageMapReader(Map<Character, Integer> basicValue, List<StageMap> stageMaps, StageMapRepository stageMapRepository) {
         this.basicValue = basicValue;
         this.stageMaps = stageMaps;
+        this.stageMapRepository = stageMapRepository;
     }
 
-    public static StageMapReader initialMapReader(List<StageMap> stageMaps) {
-        return new StageMapReader(ValueMapper.getBasicValue(), stageMaps);
+    public static StageMapReader initialMapReader(List<StageMap> stageMaps, String mapInput) {
+        StageMapRepository repository = StageMapRepository.makeRepository();
+        repository.makeInnerMapValue(mapInput);
+        return new StageMapReader(ValueMapper.getBasicValue(), stageMaps, repository);
     }
 
     public void mappingTwoDimensionalArray(String input) {
