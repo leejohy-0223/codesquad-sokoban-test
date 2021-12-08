@@ -21,9 +21,10 @@ public class StageMapReader {
 
     public void startStage() {
         initialStage();
+        GameController gameController = GameController.initialController();
         System.out.println("소코반의 세계에 오신 것을 환영합니다!\n");
         for (StageMap stageMap : stageMaps) {
-            GameController.gameStart(stageMap, stageRepository);
+            gameController.gameStart(stageMap, stageRepository);
         }
         System.out.println("전체 게임을 클리어하셨습니다!\n" + "축하드립니다!");
     }

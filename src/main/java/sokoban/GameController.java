@@ -1,12 +1,27 @@
 package sokoban;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class GameController {
-    public static void gameStart(StageMap stageMap, StageRepository stageRepository) {
+
+    private final GameSlot gameSlot;
+
+    private GameController(GameSlot gameSlot) {
+        this.gameSlot = gameSlot;
+    }
+
+    public static GameController initialController() {
+        GameSlot gameSlot = new GameSlot(new HashMap<>());
+        return new GameController(gameSlot);
+    }
+
+    public void gameStart(StageMap stageMap, StageRepository stageRepository) {
         stageMap.printStatus();
         List<Character> inputs = InputView.requestInputFromUser();
         while (true) {
+            inputs = isSaveRequest(stageMap, inputs);
+            stageMap = isLoadRequest(stageMap, inputs);
             for (Character input : inputs) {
                 if (input == 'r') {
                     stageMap = resetStage(stageMap, stageRepository);
@@ -19,6 +34,22 @@ public class GameController {
             }
             inputs = InputView.requestInputFromUser();
         }
+    }
+
+    private static List<Character> isSaveRequest(StageMap stageMap, List<Character> inputs) {
+        if (inputs.contains('S')) {
+            saveGame(inputs.get(0), stageMap);
+            inputs = InputView.requestInputFromUser();
+        }
+        return inputs;
+    }
+
+    private static void saveGame(Character slotNumber, StageMap stageMap) {
+
+    }
+
+    private static StageMap isLoadRequest(StageMap stageMap, List<Character> inputs) {
+        return null;
     }
 
     private static boolean isFinished(StageMap stageMap, List<Character> inputs) {
