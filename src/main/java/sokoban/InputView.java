@@ -31,4 +31,11 @@ public class InputView {
         String input = sc.nextLine();
         return input.chars().mapToObj(c -> (char)c).collect(Collectors.toList());
     }
+
+    public static String requestYesOrNo() {
+        System.out.print(PROMPT);
+        System.out.print("현재 슬롯에 저장된 상태가 있습니다. 덮어씌우시겠습니까? (y/n 입력) : ");
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
+    }
 }

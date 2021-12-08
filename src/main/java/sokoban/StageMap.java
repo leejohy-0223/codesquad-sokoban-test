@@ -202,4 +202,13 @@ public class StageMap {
         }
         return count;
     }
+
+    public StageMap allStatusCopy() {
+        int[][] arrCopy = new int[stageMap.length][stageMap[0].length];
+        PlayerPosition positionCopy = new PlayerPosition(position.getPosX(), position.getPosY());
+        for (int i = 0; i < stageMap.length; i++) {
+            System.arraycopy(stageMap[i], 0, arrCopy[i], 0, stageMap[i].length);
+        }
+        return new StageMap(stageNumber, arrCopy, holeAndBallCount, positionCopy);
+    }
 }

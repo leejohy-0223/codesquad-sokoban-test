@@ -17,11 +17,13 @@ public class GameController {
     }
 
     public void gameStart(StageMap stageMap, StageRepository stageRepository) {
-        stageMap.printStatus();
-        List<Character> inputs = InputView.requestInputFromUser();
+        List<Character> inputs;
         while (true) {
-            inputs = isSaveRequest(stageMap, inputs);
-            stageMap = isLoadRequest(stageMap, inputs);
+            inputs = InputView.requestInputFromUser();
+            if (isSaveOrLoadRequest(inputs)) {
+                stageMap = saveOrLoadRequest(stageMap, inputs);
+                continue;
+            }
             for (Character input : inputs) {
                 if (input == 'r') {
                     stageMap = resetStage(stageMap, stageRepository);
@@ -32,24 +34,48 @@ public class GameController {
             if (isFinished(stageMap, inputs)) {
                 return;
             }
-            inputs = InputView.requestInputFromUser();
         }
     }
 
-    private static List<Character> isSaveRequest(StageMap stageMap, List<Character> inputs) {
+    private boolean isSaveOrLoadRequest(List<Character> inputs) {
+        return (inputs.contains('S') || inputs.contains('L'));
+    }
+
+    private StageMap saveOrLoadRequest(StageMap stageMap, List<Character> inputs) {
         if (inputs.contains('S')) {
-            saveGame(inputs.get(0), stageMap);
-            inputs = InputView.requestInputFromUser();
+            try {
+                saveGame(Character.getNumericValue(inputs.get(0)), stageMap);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+            return stageMap;
         }
-        return inputs;
+
+        try {
+            stageMap = loadGame(Character.getNumericValue(inputs.get(0)), stageMap);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return stageMap;
     }
 
-    private static void saveGame(Character slotNumber, StageMap stageMap) {
-
+    private StageMap loadGame(int slotNumber, StageMap stageMap) {
+        if (gameSlot.isNotEmpty(slotNumber)) {
+            return gameSlot.loadSavedGame(slotNumber);
+        }
+        System.out.println(slotNumber + "번 세이브에 저장된 진행상황이 없습니다. 저장하신 후 불러와주세요.");
+        return stageMap;
     }
 
-    private static StageMap isLoadRequest(StageMap stageMap, List<Character> inputs) {
-        return null;
+    private void saveGame(int slotNumber, StageMap stageMap) {
+        if (gameSlot.isNotEmpty(slotNumber)) {
+            String yesOrNo = InputView.requestYesOrNo();
+            if (yesOrNo.equals("y")) {
+                gameSlot.saveStageMap(slotNumber, stageMap);
+            }
+            return;
+        }
+        gameSlot.saveStageMap(slotNumber, stageMap);
     }
 
     private static boolean isFinished(StageMap stageMap, List<Character> inputs) {
