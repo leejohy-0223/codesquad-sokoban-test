@@ -796,22 +796,42 @@ $ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar src/main/resource
 <br>
 
 ### 12. (추가) EncryptionMaker
-> **[추가기능 2]내용 추가 필요 **
+> **[추가기능 2] encrypt, decrypt**
 ```java
-    public static String alg = "AES/CBC/PKCS5Padding";
-    private static final String key = "01234567890123456789012345678901";
-    private static final String iv = key.substring(0, 16); // 16byte
+public static String alg = "AES/CBC/PKCS5Padding";
+private static final String key = "01234567890123456789012345678901";
+private static final String iv = key.substring(0, 16); // 16byte
 
-    public static String encrypt(String text) throws Exception {
-        ...
-    }
+public static String encrypt(String text) throws Exception {
+        Cipher cipher = Cipher.getInstance(alg);
+        SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
+        IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParamSpec);
 
-    public static String decrypt(String cipherText) throws Exception {
-        ...
-    }
+        byte[] encrypted = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(encrypted);
+}
+
+public static String decrypt(String cipherText) throws Exception {
+        Cipher cipher = Cipher.getInstance(alg);
+        SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
+        IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
+        cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParamSpec);
+
+        byte[] decodedBytes = Base64.getDecoder().decode(cipherText);
+        byte[] decrypted = cipher.doFinal(decodedBytes);
+        return new String(decrypted, StandardCharsets.UTF_8);
+}
+
 ```
-- ``encrypt`` : text를 encryption 한다.
-- ``decrypt`` : text를 decryption 한다.
+- 암호화, 복호화 기능을 제공하는 Cipher 클래스를 사용한다.
+- ``encrypt`` : text를 encryption 하는 메서드이다.
+- ``decrypt`` : text를 decryption 하는 메서드이다.
+- ``alg`` : 알고리즘 / 운용 모드(데이터 블록을 나누어 처리하고 합치는 것) / 패딩(블록의 빈 부분 채우기)를 Cipher에 전달하여 instance를 생성한다.    
+- ``cipher`` : getInstance를 통해 원하는 변환 형태의 이름을 전달한다.
+- ``keySpec`` : 암호화 작업을 위한 키를 의미한다.    
+- ``ivParamSpec`` : 블록 단위로 암호화 하기 위한 초기화 벡터이다.   
+- ``doFinal()`` : 암호화 / 복호화 작업을 위한 메서드이다. 이를 통해 암호화 / 복호화 된 byte 배열을 얻는다.
 
 <br>
 
@@ -885,6 +905,6 @@ $ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar src/main/resource
 ```
 - ``isNotEmpty`` : 잘못된 slot number가 들어오면 예외를 발생시킨다. 해당 slot이 비워져있는 상태인지 출력한다.
 - ``saveStageMap`` : gameSlot에 현재 게임상태의 모든 정보를 deep copy하여 저장한다.
-- ``loadSavedGame`` : gameSlot에서 요청된 게임의 모든 정보를 depp copy하여 반환한다.
+- ``loadSavedGame`` : gameSlot에서 요청된 게임의 모든 정보를 deep copy하여 반환한다.
 
 
