@@ -25,6 +25,18 @@ public class InputView {
         return sb.toString();
     }
 
+    public static String makeDecryptString(String fileName) throws Exception {
+        String line = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            line = br.readLine();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.out.println("[ERROR] 유효한 파일이 아닙니다.");
+        }
+        return EncryptionMaker.decrypt(line);
+    }
+
     public static List<Character> requestInputFromUser() {
         Scanner sc = new Scanner(System.in);
         System.out.print(PROMPT);
