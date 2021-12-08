@@ -38,6 +38,9 @@ SOKOBAN> 3L
 <details>
 <summary> 구현 코드 실행 결과 </summary>
 
+
+// 요구사항 별로 작성한다. 
+
 </details>
 
 <br> 
@@ -84,9 +87,18 @@ $ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar src/main/resource
 <br>
 
 - [ ] 되돌리기 기능, 되돌리기 취소 기능 만들기
-    - u를 누르면 한 턴을 되돌린다. 이 때 되돌린 방향을 stack에 저장한다.
-    - U를 누르면 되돌리기가 취소된다. stack에서 꺼내 다시 턴을 수행한다.
-    - turn count를 증감해야 한다.
+    #### u (한 턴 되돌리기)
+      - 매번 이동 마다 되돌리기 위한 restoreStack에 이동 전 상태를 push한다.
+      - u가 입력되면 되돌리기 위한 cancelStack에 현재 상태를 push하고, restoreStack에서 가장 최근 상태를 꺼내어 현재 객체 상태로 변경한다.
+      - 매 번 돌린 후 지도 결과와 가능한 되돌리기 회수를 출력한다.
+      - 이후 U(되돌리기 취소)가 정상적으로 수행되면 restoreStack를 clear 하여 되돌리기 취소 <-> 되돌리기가 반복되지 않도록 한다.
+  <br>
+  
+    #### U (되돌린거 취소하기)
+      - 앞서 설명된 u (한 턴 되돌리기)가 수행될 때만, cancelStack으로 되돌리기 전 상태가 저장된다.
+      - U가 입력되면 이곳에 저장된 상태를 가져와 현재 객체 상태를 변경한다.
+      - u, U가 아닌 정상적인 이동을 했을 경우에는 U 내용이 필요가 없어지므로 clear 처리를 한다.
+      - U가 정상적으로 수행되면 restoreStack을 clear 한다.
 
 <br>
 

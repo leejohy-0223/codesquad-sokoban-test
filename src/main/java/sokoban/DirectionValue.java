@@ -1,11 +1,13 @@
 package sokoban;
 
 public enum DirectionValue {
-    LEFT("왼쪽", 'A', 0, -1),
-    RIGHT("오른쪽", 'D', 0, +1),
-    UP("위쪽", 'W', -1, 0),
-    DOWN("아래쪽", 'S', 1, 0),
+    LEFT("왼쪽", 'a', 0, -1),
+    RIGHT("오른쪽", 'd', 0, +1),
+    UP("위쪽", 'w', -1, 0),
+    DOWN("아래쪽", 's', 1, 0),
     QUIT("스테이지를 스킵합니다", 'q', 0, 0),
+    RESTORE("한 턴 되돌립니다", 'u', 0, 0),
+    CANCEL("되돌리기를 취소합니다", 'U', 0, 0),
     INVALID("", ' ', 0, 0);
 
     private final String directionName;

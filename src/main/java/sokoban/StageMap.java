@@ -5,23 +5,29 @@ import static sokoban.Constant.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class StageMap {
 
     private final Map<Integer, Character> reverseValue;
-    private String stageNumber;
+    private Stack<StageMap> restoreStack;
+    private Stack<StageMap> cancelStack;
+    private final String stageNumber;
     private int[][] stageMap;
     private int holeAndBallCount;
     private PlayerPosition position;
     private int turnCount;
 
-    private StageMap(String stageNumber, int[][] stageMap, int holeAndBallCount, PlayerPosition position, int turnCount) {
+    private StageMap(String stageNumber, int[][] stageMap, int holeAndBallCount, PlayerPosition position, int turnCount,
+        Stack<StageMap> restoreStack, Stack<StageMap> cancelStack) {
         reverseValue = ValueMapper.getReverseValue();
         this.stageNumber = stageNumber;
         this.stageMap = stageMap;
         this.holeAndBallCount = holeAndBallCount;
         this.position = position;
         this.turnCount = turnCount;
+        this.restoreStack = restoreStack;
+        this.cancelStack = cancelStack;
     }
 
     public static StageMap makeStage(String stageNumber, List<String> stageList) {
@@ -33,7 +39,7 @@ public class StageMap {
 
         int[][] tempStageMap = makeIntStage(stageList, rowSize, columnSize);
         return new StageMap(stageNumber, tempStageMap, findHoleAndBallCount(tempStageMap),
-            findPlayerPosition(tempStageMap), 0);
+            findPlayerPosition(tempStageMap), 0, new Stack<>(), new Stack<>());
     }
 
     private static int findHoleAndBallCount(int[][] tempStageMap) {
@@ -109,9 +115,61 @@ public class StageMap {
     }
 
     public void movePlayer(DirectionValue dValue) {
+        if (restoreOrCancel(dValue)) {
+            return;
+        }
+        if (cancelStack.size() != 0) {
+            cancelStack.clear();
+        }
         int xTemp = position.getPosX() + dValue.getXValue();
         int yTemp = position.getPosY() + dValue.getYValue();
         decideMoving(dValue, xTemp, yTemp, stageMap[xTemp][yTemp]);
+    }
+
+    private boolean restoreOrCancel(DirectionValue dValue) {
+        if (dValue.getSign() == 'u') {
+            executeRestore();
+        }
+        if (dValue.getSign() == 'U') {
+            executeCancel();
+        }
+        return dValue.getSign() == 'u' || dValue.getSign() == 'U';
+    }
+
+    private void executeRestore() {
+        if (restoreStack.isEmpty()) {
+            System.out.println("되돌릴 상태가 없습니다.");
+            return;
+        }
+        cancelStack.push(statusCopyExcludeStack());
+        stackPopAndChangeMap(restoreStack);
+        System.out.println("한 턴 되돌렸습니다.");
+        printOnlyStageMap();
+        System.out.println("현 시점에서 가능한 되돌리기 수는 " + restoreStack.size() + "회 입니다.");
+    }
+
+    private void executeCancel() {
+        if (cancelStack.isEmpty()) {
+            System.out.println("되돌리기 취소할 상태가 없습니다.");
+            return;
+        }
+        restoreStack.clear();
+        stackPopAndChangeMap(cancelStack);
+        System.out.println("되돌리기를 취소했습니다.");
+        printOnlyStageMap();
+        System.out.println("현 시점에서 가능한 취소 수는 " + cancelStack.size() + "회 입니다.");
+    }
+
+    private void stackPopAndChangeMap(Stack<StageMap> stack) {
+        StageMap beforeStageMap = stack.pop();
+        changeMapToThis(beforeStageMap);
+    }
+
+    private void changeMapToThis(StageMap beforeStageMap) {
+        stageMap = beforeStageMap.stageMap;
+        holeAndBallCount = beforeStageMap.holeAndBallCount;
+        position = beforeStageMap.position;
+        turnCount = beforeStageMap.turnCount;
     }
 
     private void decideMoving(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
@@ -128,6 +186,7 @@ public class StageMap {
     }
 
     private void moveToHoleOrVoid(DirectionValue dValue, int xTemp, int yTemp, int newBlock) {
+        restoreStack.push(statusCopyExcludeStack());
         decideBeforePlayerPositionStatus();
         decidePlayerPosition(dValue, xTemp, yTemp, newBlock);
         turnCount++;
@@ -149,6 +208,7 @@ public class StageMap {
             moveImpossible(dValue);
             return;
         }
+        restoreStack.push(statusCopyExcludeStack());
         if (stageMap[nx][ny] == INT_VOID) {
             stageMap[nx][ny] = INT_BALL;
         }
@@ -204,11 +264,23 @@ public class StageMap {
     }
 
     public StageMap allStatusCopy() {
-        int[][] arrCopy = new int[stageMap.length][stageMap[0].length];
         PlayerPosition positionCopy = new PlayerPosition(position.getPosX(), position.getPosY());
+        int[][] arrCopy = stageMapDeepCopy();
+        return new StageMap(stageNumber, arrCopy, holeAndBallCount, positionCopy, turnCount, new Stack<>(),
+            new Stack<>());
+    }
+
+    public StageMap statusCopyExcludeStack() {
+        PlayerPosition positionCopy = new PlayerPosition(position.getPosX(), position.getPosY());
+        int[][] arrCopy = stageMapDeepCopy();
+        return new StageMap(stageNumber, arrCopy, holeAndBallCount, positionCopy, turnCount, restoreStack, cancelStack);
+    }
+
+    private int[][] stageMapDeepCopy() {
+        int[][] arrCopy = new int[stageMap.length][stageMap[0].length];
         for (int i = 0; i < stageMap.length; i++) {
             System.arraycopy(stageMap[i], 0, arrCopy[i], 0, stageMap[i].length);
         }
-        return new StageMap(stageNumber, arrCopy, holeAndBallCount, positionCopy, turnCount);
+        return arrCopy;
     }
 }

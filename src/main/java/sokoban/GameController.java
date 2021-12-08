@@ -95,13 +95,12 @@ public class GameController {
     }
 
     private static StageMap resetStage(StageMap stageMap, StageRepository stageRepository) {
-        stageMap = initialStageMap(stageMap, stageRepository);
+        stageMap = initialStageMap(stageMap.getStageNumber(), stageRepository);
         stageMap.printOnlyStageMap();
         return stageMap;
     }
 
-    private static StageMap initialStageMap(StageMap stageMap, StageRepository stageRepository) {
-        String stageNumber = stageMap.getStageNumber();
+    private static StageMap initialStageMap(String stageNumber, StageRepository stageRepository) {
         List<String> initialMapValue = stageRepository.getStageMaps().get(stageNumber);
         System.out.println(stageNumber + "가 리셋되었습니다.");
         return StageMap.makeStage(stageNumber, initialMapValue);
@@ -122,7 +121,7 @@ public class GameController {
 
     private static DirectionValue mappingToDirectionValue(Character input) {
         for (DirectionValue value : DirectionValue.values()) {
-            if (Character.toLowerCase(value.getSign()) == Character.toLowerCase(input)) {
+            if (value.getSign() == input) {
                 return value;
             }
         }
