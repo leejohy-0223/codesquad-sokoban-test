@@ -28,7 +28,7 @@ public class EncryptionMaker {
         IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParamSpec);
 
-        byte[] decodedBytes = Base64.getDecoder().decode(cipherText);
+        byte[] decodedBytes = Base64.getMimeDecoder().decode(cipherText);
         byte[] decrypted = cipher.doFinal(decodedBytes);
         return new String(decrypted, StandardCharsets.UTF_8);
     }
