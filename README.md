@@ -215,7 +215,7 @@ $ git checkout step2_리비젼_id
 $ javac *.java
 $ java Application
 ```
-- 위와 같이 gist repository를 통한 실행이 안 될 경우, [GitHub Step2 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step1) 에서 프로젝트 clone을 통해 다음과 같이 실행한다.
+- 위와 같이 gist repository를 통한 실행이 안 될 경우, [GitHub Step2 Repository](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step2) 에서 프로젝트 clone을 통해 다음과 같이 실행한다.
 ```
 $ git clone https://github.com/leejohy-0223/codesquad-sokoban-test.git
 $ cd codesquad-sokoban-test
