@@ -76,10 +76,10 @@ $ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar src/main/resource
     
 <br>
 
-- [ ] 지도 데이터 변환 프로그램 만들기
-    - map.txt를 encryption할 수 있는 프로그램을 작성한다.
-    - 특정 규칙에 맞게 map.txt를 encryption 한다. 
-    - map, 역방향 map을 사용해서 구현하자.
+- [X] 지도 데이터 변환 프로그램 만들기
+    - map.txt를 encryption할 수 있는 프로그램을 추가로 생성한다.
+    - java AES 암호화를 사용한다.
+    - 먼저 암호화 애플리케이션을 통해 암호화 파일을 생성하고, 이를 게임 실행 애플리케이션으로 전달하는 방식으로 구현한다. 
 
 <br>
 
