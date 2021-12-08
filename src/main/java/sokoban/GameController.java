@@ -43,27 +43,17 @@ public class GameController {
 
     private StageMap saveOrLoadRequest(StageMap stageMap, List<Character> inputs) {
         if (inputs.contains('S')) {
-            try {
-                saveGame(Character.getNumericValue(inputs.get(0)), stageMap);
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-            return stageMap;
+            return saveRequest(stageMap, inputs);
         }
+        return loadRequest(stageMap, inputs);
+    }
 
+    private StageMap saveRequest(StageMap stageMap, List<Character> inputs) {
         try {
-            stageMap = loadGame(Character.getNumericValue(inputs.get(0)), stageMap);
+            saveGame(Character.getNumericValue(inputs.get(0)), stageMap);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-        return stageMap;
-    }
-
-    private StageMap loadGame(int slotNumber, StageMap stageMap) {
-        if (gameSlot.isNotEmpty(slotNumber)) {
-            return gameSlot.loadSavedGame(slotNumber);
-        }
-        System.out.println(slotNumber + "번 세이브에 저장된 진행상황이 없습니다. 저장하신 후 불러와주세요.");
         return stageMap;
     }
 
@@ -76,6 +66,23 @@ public class GameController {
             return;
         }
         gameSlot.saveStageMap(slotNumber, stageMap);
+    }
+
+    private StageMap loadRequest(StageMap stageMap, List<Character> inputs) {
+        try {
+            stageMap = loadGame(Character.getNumericValue(inputs.get(0)), stageMap);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return stageMap;
+    }
+
+    private StageMap loadGame(int slotNumber, StageMap stageMap) {
+        if (gameSlot.isNotEmpty(slotNumber)) {
+            return gameSlot.loadSavedGame(slotNumber);
+        }
+        System.out.println(slotNumber + "번 세이브에 저장된 진행상황이 없습니다. [1-5] 사이의 세이브에 저장하신 후 불러와주세요.");
+        return stageMap;
     }
 
     private static boolean isFinished(StageMap stageMap, List<Character> inputs) {
