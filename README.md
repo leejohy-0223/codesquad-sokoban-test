@@ -272,6 +272,8 @@ $ java -jar build/libs/codesquad-sokoban-test-1.0-SNAPSHOT.jar src/main/resource
 - 초기화(reset) 처리가 필요하다. txt로 부터 map 정보를 List로 묶어서 저장하는 방식을 고려한다.
 - o(ball) + O(hall) = 0이 되므로, 0의 개수와 처음 초기화 된 ball의 개수가 동일해질 경우 다음 스테이지로 넘어간다.
 - 플레이어의 턴 수를 카운트 한다. 매 스테이지마다 몇 턴 걸렸는지 출력한다.
+- ball + hall => 0 으로 표현된다.
+- player + hall => * (asterisk) 로 표현된다.
 
 <br>
 
