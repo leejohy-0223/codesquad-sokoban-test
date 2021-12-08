@@ -15,13 +15,13 @@ public class StageMap {
     private PlayerPosition position;
     private int turnCount;
 
-    private StageMap(String stageNumber, int[][] stageMap, int holeAndBallCount, PlayerPosition position) {
+    private StageMap(String stageNumber, int[][] stageMap, int holeAndBallCount, PlayerPosition position, int turnCount) {
         reverseValue = ValueMapper.getReverseValue();
         this.stageNumber = stageNumber;
         this.stageMap = stageMap;
         this.holeAndBallCount = holeAndBallCount;
         this.position = position;
-        this.turnCount = 0;
+        this.turnCount = turnCount;
     }
 
     public static StageMap makeStage(String stageNumber, List<String> stageList) {
@@ -33,7 +33,7 @@ public class StageMap {
 
         int[][] tempStageMap = makeIntStage(stageList, rowSize, columnSize);
         return new StageMap(stageNumber, tempStageMap, findHoleAndBallCount(tempStageMap),
-            findPlayerPosition(tempStageMap));
+            findPlayerPosition(tempStageMap), 0);
     }
 
     private static int findHoleAndBallCount(int[][] tempStageMap) {
@@ -209,6 +209,6 @@ public class StageMap {
         for (int i = 0; i < stageMap.length; i++) {
             System.arraycopy(stageMap[i], 0, arrCopy[i], 0, stageMap[i].length);
         }
-        return new StageMap(stageNumber, arrCopy, holeAndBallCount, positionCopy);
+        return new StageMap(stageNumber, arrCopy, holeAndBallCount, positionCopy, turnCount);
     }
 }
