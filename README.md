@@ -1,8 +1,6 @@
 ## 코드스쿼드 마스터즈 코스 테스트 : 소코반 게임
 - 프로젝트 파일 포함된 repository 입니다.
 
-<br> 
-
 ### 🔧 문제 개요
 
 <br>
@@ -27,17 +25,13 @@
 <br>
 
 ### 📃 주요 기능 명세
-- 각 gist revision number 참고
-
-<br> 
-
-### 🚀 실행 방법
-
-<br>
-
-#### 실행 환경
-- Java 8
+- 각 gist revision number 및 아래 branch 참고
 
 <br>
 
 #### Step별 branch
+
+1. [Step1 : 지도 데이터 출력하기](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step1)
+2. [Step2 : 플레이어 이동 구현하기](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step2)
+3. [Step3 : 소코반 게임 완성하기](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step3)
+4. [Step4 : 추가 기능 구현](https://github.com/leejohy-0223/codesquad-sokoban-test/tree/step4)
